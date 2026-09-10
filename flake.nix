@@ -35,6 +35,14 @@
       packages = builtins.mapAttrs (system: pkgs: {
         linux-6_6 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.6.nix { };
         linux-6_12 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.12.nix { };
+
+        nixos =
+          (nixpkgs.lib.nixosSystem {
+            modules = [
+              ./nixos/configuration.nix
+              { nixpkgs.buildPlatform = system; }
+            ];
+          }).config.system.build.toplevel;
       }) nixpkgs.legacyPackages;
 
       checks = builtins.mapAttrs (system: pkgs: {
