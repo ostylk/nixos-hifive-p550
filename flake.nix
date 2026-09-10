@@ -27,6 +27,7 @@
       };
 
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
         modules = [
           ./nixos/configuration.nix
         ];
@@ -38,11 +39,12 @@
 
         nixos =
           (nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
             modules = [
               ./nixos/configuration.nix
               { nixpkgs.buildPlatform = system; }
             ];
-          }).config.system.build.toplevel;
+          }).config.system.build.sdImage;
       }) nixpkgs.legacyPackages;
 
       checks = builtins.mapAttrs (system: pkgs: {
