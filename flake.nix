@@ -22,6 +22,16 @@
       ...
     }@inputs:
     {
+      nixosModules = {
+        hardware = import ./nixos/hardware.nix;
+      };
+
+      nixosConfigurations.default = nixpkgs.lib.nixosSystem {
+        modules = [
+          ./nixos/configuration.nix
+        ];
+      };
+
       packages = builtins.mapAttrs (system: pkgs: {
         linux-6_6 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.6.nix { };
         linux-6_12 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.12.nix { };
