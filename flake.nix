@@ -22,6 +22,11 @@
       ...
     }@inputs:
     {
+      packages = builtins.mapAttrs (system: pkgs: {
+        linux-6_6 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.6.nix { };
+        linux-6_12 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.12.nix { };
+      }) nixpkgs.legacyPackages;
+
       checks = builtins.mapAttrs (system: pkgs: {
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
           src = ./.;
