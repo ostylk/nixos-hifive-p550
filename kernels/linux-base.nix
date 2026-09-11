@@ -10,12 +10,17 @@ let
   version = toString (builtins.match ".+VERSION = ([0-9]+).+" (builtins.readFile makefile));
   patchlevel = toString (builtins.match ".+PATCHLEVEL = ([0-9]+).+" (builtins.readFile makefile));
   sublevel = toString (builtins.match ".+SUBLEVEL = ([0-9]+).+" (builtins.readFile makefile));
+  extraversion = toString (
+    builtins.match ".+EXTRAVERSION = ([a-z0-9-]+).+" (builtins.readFile makefile)
+  );
 in
 buildLinux (
   args
   // {
     inherit src;
-    version = "${version}.${patchlevel}.${sublevel}";
+    version = "${version}.${patchlevel}.${sublevel}${
+      (lib.optionalString (extraversion != "") extraversion)
+    }";
 
     defconfig = "hifive-premier-p550_defconfig";
 
