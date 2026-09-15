@@ -47,6 +47,11 @@
           inherit (inputs) meta-sifive;
         };
 
+        opensbi = pkgs.pkgsCross.riscv64.callPackage ./packages/opensbi.nix {
+          inherit (inputs) meta-sifive;
+          inherit (self.packages.${system}) uBoot;
+        };
+
         nixos =
           (nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
