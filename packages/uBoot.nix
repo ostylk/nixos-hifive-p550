@@ -2,20 +2,19 @@
   fetchFromGitHub,
   buildUBoot,
   lib,
-  meta-sifive,
 }:
 
 let
   src = fetchFromGitHub {
     owner = "eswincomputing";
     repo = "u-boot";
-    rev = "6c8f710028e52709b29b70809131509f2edfb1e5";
-    hash = "sha256-jaHsfVjosP+WOui5Y+zDF9Pt1hfaWi0On+aYPdU7mjQ=";
+    rev = "f4f474966cc706b5e58bf2550767afc785270adc";
+    hash = "sha256-VE/Xgw8s97ClX0vhpaLw+oOtpDN+i227Jd339A9FwHc=";
   };
 
-  extraPatches = map (elem: "${meta-sifive}/recipes-bsp/u-boot/u-boot-sifive-hf-prem/${elem}") (
-    builtins.attrNames (builtins.readDir "${meta-sifive}/recipes-bsp/u-boot/u-boot-sifive-hf-prem")
-  );
+  extraPatches = [
+    ./uBoot/0001-riscv-hifive_premier_p550-Update-boot-media-sequence.patch
+  ];
 
   makefile = "${src}/Makefile";
   version = toString (builtins.match ".+VERSION = ([0-9]+).+" (builtins.readFile makefile));

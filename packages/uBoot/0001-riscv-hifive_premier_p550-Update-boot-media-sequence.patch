@@ -1,0 +1,30 @@
+From 6b1fbfc30ad1560d88bc698c2121843f74c0a629 Mon Sep 17 00:00:00 2001
+From: Pritesh Patel <pritesh.patel@einfochips.com>
+Date: Thu, 6 Mar 2025 11:27:29 +0000
+Subject: [PATCH 1/2] riscv: hifive_premier_p550: Update boot media sequence
+
+Boot Media scanning sequence is as below:
+SD-CARD->USB->NVMe->SATA->eMMC
+
+Upstream-Status: Pending
+
+Signed-off-by: Pritesh Patel <pritesh.patel@einfochips.com>
+---
+ include/configs/hifive_premier_p550.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/configs/hifive_premier_p550.h b/include/configs/hifive_premier_p550.h
+index de30a410a8..9961138f16 100644
+--- a/include/configs/hifive_premier_p550.h
++++ b/include/configs/hifive_premier_p550.h
+@@ -56,7 +56,7 @@
+     "uuid_swap=5ebcaaf0-e098-43b9-beef-1f8deedd135e\0" \
+     "partitions=name=boot,start=1MiB,size=512MiB,type=${typeid_efi},uuid=${uuid_boot};name=swap,size=4096MiB,type=${typeid_swap},uuid=${uuid_swap};name=root,size=30GiB,type=${typeid_filesystem},uuid=${uuid_root};name=userdata,type=${typeid_filesystem},size=-;\0" \
+     "gpt_partition=gpt write mmc ${emmc_dev} $partitions\0" \
+-    "boot_targets=mmc1 usb ahci mmc0\0"
++    "boot_targets=mmc1 usb nvme0 ahci mmc0\0"
+ 
+ #undef CONFIG_BOOTCOMMAND
+ #define CONFIG_BOOTCOMMAND \
+-- 
+2.34.1
