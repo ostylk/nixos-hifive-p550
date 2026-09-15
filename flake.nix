@@ -43,6 +43,10 @@
         linux-6_6 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.6.nix { };
         linux-6_12 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.12.nix { };
 
+        uBoot = pkgs.pkgsCross.riscv64.callPackage ./packages/uBoot.nix {
+          inherit (inputs) meta-sifive;
+        };
+
         nixos =
           (nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
