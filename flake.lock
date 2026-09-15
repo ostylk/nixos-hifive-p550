@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "meta-sifive": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788161238,
+        "narHash": "sha256-BAvga3WM7s8IVlLhlS8cs1WAe6TDSWSGdVhKK94O6a8=",
+        "owner": "sifive",
+        "repo": "meta-sifive",
+        "rev": "e83cb3fa233ec015ba073e42042f4ee3036bbc77",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sifive",
+        "ref": "rel/meta-sifive/hifive-premier-p550",
+        "repo": "meta-sifive",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1789006805,
@@ -39,6 +56,7 @@
     },
     "root": {
       "inputs": {
+        "meta-sifive": "meta-sifive",
         "nixpkgs": "nixpkgs",
         "pre-commit-hooks": "pre-commit-hooks"
       }

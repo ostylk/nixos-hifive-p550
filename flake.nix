@@ -12,6 +12,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "";
     };
+    # Contains patches for u-boot and opensbi and additionally a config for the bootchain image.
+    # If you update this input be prepared to also update u-boot and opensbi refs.
+    meta-sifive = {
+      url = "github:sifive/meta-sifive?ref=rel/meta-sifive/hifive-premier-p550";
+      flake = false;
+    };
   };
 
   outputs =
