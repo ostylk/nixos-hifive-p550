@@ -44,4 +44,6 @@ jobs:
         with:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.tag }}
-          files: nixos-${{ inputs.tag }}.img.xz bootloader_ddr5_secboot.bin
+          files: |
+            nixos-${{ inputs.tag }}.img.xz
+            bootloader_ddr5_secboot.bin
