@@ -52,6 +52,13 @@
           inherit (self.packages.${system}) uBoot;
         };
 
+        nsign = pkgs.callPackage ./packages/nsign.nix { };
+
+        bootchain = pkgs.callPackage ./packages/bootchain.nix {
+          inherit (inputs) meta-sifive;
+          inherit (self.packages.${system}) opensbi nsign;
+        };
+
         nixos =
           (nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
