@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release tag to create (e.g. v0.1.0)"
+        description: "Release tag"
         required: true
         type: string
 
@@ -33,9 +33,15 @@ jobs:
       - name: Stage image for release
         run: cp result/nixos.img.xz "nixos-${{ inputs.tag }}.img.xz"
 
+      - name: Build .#bootchain (cross-compiled for riscv64)
+        run: nix build .#bootchain -L --print-build-logs
+
+      - name: Stage bootchain for release
+        run: cp result/bootloader_ddr5_secboot.bin bootloader_ddr5_secboot.bin
+
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.tag }}
-          files: nixos-${{ inputs.tag }}.img.xz
+          files: nixos-${{ inputs.tag }}.img.xz bootloader_ddr5_secboot.bin
