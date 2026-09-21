@@ -77,7 +77,7 @@
         };
 
       boot.postBootCommands = ''
-        if [ -f /nix-path-registration ]; then
+        if [ -f ${nixPathRegistrationFile} ]; then
           set -euo pipefail
           set -x
 
