@@ -75,7 +75,7 @@
             modules = [
               ./nixos/configuration.nix
               (
-                { lib, ... }:
+                { lib, pkgs, ... }:
                 {
                   nixpkgs.buildPlatform = system;
                   boot.kernelPackages = lib.mkForce (
