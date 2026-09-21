@@ -29,7 +29,10 @@
     }@inputs:
     {
       nixosModules = {
-        hardware = import ./nixos/hardware.nix;
+        default = ./nixos/configuration.nix;
+        fstab = ./nixos/fstab.nix;
+        hardware = ./nixos/hardware.nix;
+        image = ./nixos/image.nix;
       };
 
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
@@ -57,12 +60,29 @@
           inherit (self.packages.${system}) opensbi nsign;
         };
 
-        nixos =
+        nixosImage =
           (nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
             modules = [
               ./nixos/configuration.nix
               { nixpkgs.buildPlatform = system; }
+            ];
+          }).config.system.build.sdImage;
+
+        nixosImage6_12 =
+          (nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = [
+              ./nixos/configuration.nix
+              (
+                { lib, ... }:
+                {
+                  nixpkgs.buildPlatform = system;
+                  boot.kernelPackages = lib.mkForce (
+                    pkgs.linuxPackagesFor (pkgs.callPackage ./kernels/linux-6.12.nix { })
+                  );
+                }
+              )
             ];
           }).config.system.build.sdImage;
       }) nixpkgs.legacyPackages;

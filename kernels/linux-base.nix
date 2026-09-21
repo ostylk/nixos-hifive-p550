@@ -34,7 +34,7 @@ buildLinux (
         DRM_IMG_VOLCANIC = lib.mkForce no;
 
         # The eic7700 fdt does not assign nids to CPUs
-        # so the linux kernel panics if NUMA is activated (because of poor vendor code)
+        # so the linux kernel panics if NUMA is enabled (because of poor vendor fdt)
         NUMA = lib.mkForce no;
 
         # ethernet driver seem to only work if compiled-in...

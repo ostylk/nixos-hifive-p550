@@ -18,7 +18,7 @@
         };
 
         toplevel = config.system.build.toplevel;
-        efiArch = pkgs.hostPlatform.efiArch;
+        efiArch = pkgs.stdenv.hostPlatform.efiArch;
         bootloader = "${pkgs.systemd}/lib/systemd/boot/efi/systemd-boot${efiArch}.efi";
         bootloaderDest = "${lib.strings.toUpper efiArch}.EFI";
       in
