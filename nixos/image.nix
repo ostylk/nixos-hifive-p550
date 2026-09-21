@@ -28,6 +28,7 @@
         "/boot" = {
           label = "EFI";
           fsType = "vfat";
+          neededForBoot = true;
         };
       };
 
