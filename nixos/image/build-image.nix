@@ -39,7 +39,7 @@ runCommand "nixos.img.xz"
       label-id: ${imageUuid}
 
       size=${efiPartitionSize},type=U
-      type=L
+      type=72ec70a6-cf74-40e6-bd49-4bda08e8f224
     EOF
 
     # Copy the rootfs into the image

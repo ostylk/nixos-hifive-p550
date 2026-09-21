@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./fstab.nix
     ./hardware.nix
     ./image.nix
   ];
