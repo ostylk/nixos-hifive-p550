@@ -1,5 +1,5 @@
 {
-  description = "New development project. TODO: change.";
+  description = "NixOS on HiFive Premier P550";
 
   inputs = {
     # Nixpkgs
