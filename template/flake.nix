@@ -22,8 +22,7 @@
 
       asterisc = {
         imports = [
-          inputs.nixos-hifive.nixosModules.fstab
-          inputs.nixos-hifive.nixosModules.hardware
+          inputs.nixos-hifive.nixosModules.default
         ];
 
         deployment = {

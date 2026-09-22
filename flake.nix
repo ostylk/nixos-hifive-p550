@@ -29,7 +29,12 @@
     }@inputs:
     {
       nixosModules = {
-        default = ./nixos/configuration.nix;
+        default = {
+          imports = [
+            ./nixos/fstab.nix
+            ./nixos/hardware.nix
+          ];
+        };
         fstab = ./nixos/fstab.nix;
         hardware = ./nixos/hardware.nix;
         image = ./nixos/image.nix;
