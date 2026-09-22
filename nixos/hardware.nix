@@ -8,6 +8,9 @@
     "earlycon=sbi"
   ];
 
+  # This kernel has every necessary module compiled in
+  boot.initrd.includeDefaultModules = false;
+
   # Make sure we use the correct device tree, otherwise the board just won't boot
   hardware.deviceTree = {
     enable = true;

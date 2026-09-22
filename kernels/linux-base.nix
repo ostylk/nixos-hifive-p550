@@ -23,6 +23,8 @@ buildLinux (
     }";
 
     defconfig = "hifive-premier-p550_defconfig";
+    # This board does *NOT* like kernel modules (or anything extra really)
+    autoModules = false;
 
     structuredExtraConfig =
       with lib.kernel;
