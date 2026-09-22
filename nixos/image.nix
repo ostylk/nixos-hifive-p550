@@ -23,6 +23,7 @@
         bootloaderDest = "${lib.strings.toUpper efiArch}.EFI";
       in
       pkgs.callPackage ./image/build-image.nix {
+        name = "nixos-${config.system.nixos.label}";
         inherit rootfs;
         populateEspCommands = ''
           toEspName() {

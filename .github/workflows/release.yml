@@ -31,7 +31,7 @@ jobs:
         run: nix build .#nixosImage -L --print-build-logs
 
       - name: Stage NixOS with kernel v6.6 for release
-        run: cp result/nixos.img.xz "nixos-6.6-${{ inputs.tag }}.img.xz"
+        run: cp result/*.img.xz .
 
       - name: Build Bootchain image (cross-compiled)
         run: nix build .#bootchain -L --print-build-logs
@@ -45,5 +45,5 @@ jobs:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.tag }}
           files: |
-            nixos-6.6-${{ inputs.tag }}.img.xz
+            *.img.xz
             bootloader_ddr5_secboot.bin

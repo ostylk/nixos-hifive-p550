@@ -6,6 +6,7 @@
   mtools,
   xz,
 
+  name,
   rootfs,
   populateEspCommands,
   imageUuid ? "1dec9de4-6e6b-4460-8c74-1ee4a2f0433e",
@@ -14,12 +15,7 @@
   efiPartitionLabel ? "EFI",
 }:
 
-# TODOs:
-# 1. Fix derivation name
-# 2. Fix output name (c.f. 1)
-# 3. Check efiPartition < imageSize  (maybe sfdisk already throws error if that does not work out)
-# 4. Check if hardcoded nixos.img and esp.img is good (probably not)
-runCommand "nixos.img.xz"
+runCommand "${name}.img.xz"
   {
     nativeBuildInputs = [
       util-linux
@@ -30,10 +26,14 @@ runCommand "nixos.img.xz"
     ];
   }
   ''
-    # Create empty file
-    truncate -s ${imageSize} nixos.img
+    # Check if efiPartitionSize < imageSize which is obviously an user error
+    if [ "$(numfmt --from=iec ${efiPartitionSize})" -ge "$(numfmt --from=iec ${imageSize})" ]; then
+      echo "efiPartitionSize (${efiPartitionSize}) must be smaller than imageSize (${imageSize})." >&2
+      exit 1
+    fi
 
-    # Format to GPT (EFI and rootfs partition)
+    # Create image file and create GPT partitions (EFI and rootfs partition)
+    truncate -s ${imageSize} nixos.img
     sfdisk --no-reread --no-tell-kernel nixos.img << EOF
       label: gpt
       label-id: ${imageUuid}
@@ -42,8 +42,14 @@ runCommand "nixos.img.xz"
       type=72ec70a6-cf74-40e6-bd49-4bda08e8f224
     EOF
 
-    # Copy the rootfs into the image
+    # Check whether rootfs fits into parition and copy the rootfs into the image
     eval $(partx nixos.img -o START,SECTORS --nr 2 --pairs)
+    rootfsBytes=$(stat -c%s ${rootfs})
+    partitionBytes=$((SECTORS * 512))
+    if [ "$rootfsBytes" -gt "$partitionBytes" ]; then
+      echo "rootfs (''${rootfsBytes} B) does not fit in the root partition (''${partitionBytes} B). Increase imageSize (or maybe shrink efiPartitionSize)." >&2
+      exit 1
+    fi
     dd conv=notrunc if=${rootfs} of=nixos.img seek=$START count=$SECTORS
 
     # Prepare ESP/EFI partition
@@ -76,5 +82,5 @@ runCommand "nixos.img.xz"
 
     # Copy to nix store
     mkdir $out
-    mv nixos.img.xz $out/nixos.img.xz
+    mv nixos.img.xz "$out/${name}.img.xz"
   ''

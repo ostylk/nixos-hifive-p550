@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  system.nixos.tags = [ "hifive-premier-p550" ];
+
   # Use kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.callPackage ../kernels/linux-6.6.nix { });
   boot.kernelParams = [
