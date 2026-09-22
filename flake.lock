@@ -1,66 +1,6 @@
 {
   "nodes": {
-    "meta-sifive": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1788161238,
-        "narHash": "sha256-BAvga3WM7s8IVlLhlS8cs1WAe6TDSWSGdVhKK94O6a8=",
-        "owner": "sifive",
-        "repo": "meta-sifive",
-        "rev": "e83cb3fa233ec015ba073e42042f4ee3036bbc77",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sifive",
-        "ref": "rel/meta-sifive/hifive-premier-p550",
-        "repo": "meta-sifive",
-        "type": "github"
-      }
-    },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1789006805,
-        "narHash": "sha256-xB8mKMOx1IA9vTDNLmJZ6n4wCMq/cuWBBOzGCRnqxrU=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "8ce4ef6cb6f871616146b9fe26d2a5ae594e94fe",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "pre-commit-hooks": {
-      "inputs": {
-        "flake-compat": [],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1788267358,
-        "narHash": "sha256-nt+lUqYVpc9Y6JeMd2WmXzCDojasdadKo0mWcluvY2Y=",
-        "owner": "cachix",
-        "repo": "git-hooks.nix",
-        "rev": "27555e2624241fb116b49095df4caaee85a25691",
-        "type": "github"
-      },
-      "original": {
-        "owner": "cachix",
-        "repo": "git-hooks.nix",
-        "type": "github"
-      }
-    },
-    "root": {
-      "inputs": {
-        "meta-sifive": "meta-sifive",
-        "nixpkgs": "nixpkgs",
-        "pre-commit-hooks": "pre-commit-hooks"
-      }
-    }
+    "root": {}
   },
   "root": "root",
   "version": 7

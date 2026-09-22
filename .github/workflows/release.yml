@@ -34,7 +34,7 @@ jobs:
         run: cp result/*.img.xz .
 
       - name: Build Bootchain image (cross-compiled)
-        run: nix build .#bootchain -L --print-build-logs
+        run: nix build .#bootchainPremierP550 -L --print-build-logs
 
       - name: Stage bootchain for release
         run: cp result/bootloader_ddr5_secboot.bin bootloader_ddr5_secboot.bin

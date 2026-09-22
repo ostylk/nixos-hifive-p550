@@ -3,11 +3,11 @@
   stdenv,
   fetchFromGitHub,
   python3,
-  uBoot,
+  ubootPremierP550,
   meta-sifive,
   withPlatform ? "eswin/eic770x",
-  withPayload ? "${uBoot}/u-boot.bin",
-  withFDT ? "${uBoot}/u-boot.dtb",
+  withPayload ? "${ubootPremierP550}/u-boot.bin",
+  withFDT ? "${ubootPremierP550}/u-boot.dtb",
 }:
 
 let

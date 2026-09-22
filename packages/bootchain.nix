@@ -1,7 +1,7 @@
 {
   nsign,
   meta-sifive,
-  opensbi,
+  opensbiPremierP550,
   stdenvNoCC,
   fetchFromGitHub,
 }:
@@ -17,7 +17,7 @@ let
   nsignCfg = "${meta-sifive}/recipes-bsp/bootchain/files/nsign.cfg";
   secondBootFw = "${p550-bin}/second_boot_fw/second_boot_fw.bin";
   ddrFw = "${p550-bin}/ddr-fw/ddr_fw.bin";
-  payload = "${opensbi}/share/opensbi/lp64/eswin/eic770x/firmware/fw_payload.bin";
+  payload = "${opensbiPremierP550}/share/opensbi/lp64/eswin/eic770x/firmware/fw_payload.bin";
 in
 stdenvNoCC.mkDerivation {
   name = "bootloader_ddr5_secboot";
