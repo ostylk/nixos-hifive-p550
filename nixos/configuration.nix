@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 
 {
   imports = [
@@ -21,11 +21,15 @@
   # Allow insecure root login via SSH
   services.openssh = {
     enable = true;
+    openFirewall = true;
     settings = {
       PermitRootLogin = "yes";
+      PasswordAuthentication = true;
+      PermitEmptyPasswords = true;
+      KbdInteractiveAuthentication = true;
     };
   };
-  networking.firewall.allowedTCPPorts = config.services.openssh.ports;
+  security.pam.services.sshd.allowNullPassword = true;
 
   system.stateVersion = "26.11";
 }
