@@ -12,7 +12,9 @@
 
 let
   patches = map (elem: "${meta-sifive}/recipes-bsp/opensbi/opensbi-sifive-hf-prem/${elem}") (
-    builtins.attrNames (builtins.readDir "${meta-sifive}/recipes-bsp/opensbi/opensbi-sifive-hf-prem")
+    builtins.filter (lib.hasSuffix ".patch") (
+      builtins.attrNames (builtins.readDir "${meta-sifive}/recipes-bsp/opensbi/opensbi-sifive-hf-prem")
+    )
   );
 in
 # Code from nixpkgs by-name/op/opensbi/package.nix
