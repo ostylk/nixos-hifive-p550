@@ -35,62 +35,52 @@
         image = ./nixos/image.nix;
       };
 
-      nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./nixos/configuration.nix
-        ];
-      };
-
       templates.default = {
         path = ./template;
         description = "Quickstart NixOS remote cross compiled deployment on board";
       };
 
-      packages = builtins.mapAttrs (system: pkgs: {
-        linux-6_6 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.6.nix { };
-        linux-6_12 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.12.nix { };
+      packages = builtins.mapAttrs (
+        system: pkgs:
+        let
+          mkImage =
+            kernel:
+            (nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs; };
+              modules = [
+                ./nixos/configuration.nix
+                (
+                  { lib, pkgs, ... }:
+                  {
+                    nixpkgs.buildPlatform = system;
+                    boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.callPackage kernel { }));
+                  }
+                )
+              ];
+            }).config.system.build.sdImage;
+        in
+        {
+          linux-6_6 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.6.nix { };
+          linux-6_12 = pkgs.pkgsCross.riscv64.callPackage ./kernels/linux-6.12.nix { };
 
-        uBoot = pkgs.pkgsCross.riscv64.callPackage ./packages/uBoot.nix { };
+          nixosImage = mkImage ./kernels/linux-6.6.nix;
+          nixosImage6_12 = mkImage ./kernels/linux-6.12.nix;
 
-        opensbi = pkgs.pkgsCross.riscv64.callPackage ./packages/opensbi.nix {
-          inherit (inputs) meta-sifive;
-          inherit (self.packages.${system}) uBoot;
-        };
+          uBoot = pkgs.pkgsCross.riscv64.callPackage ./packages/uBoot.nix { };
 
-        nsign = pkgs.callPackage ./packages/nsign.nix { };
+          opensbi = pkgs.pkgsCross.riscv64.callPackage ./packages/opensbi.nix {
+            inherit (inputs) meta-sifive;
+            inherit (self.packages.${system}) uBoot;
+          };
 
-        bootchain = pkgs.callPackage ./packages/bootchain.nix {
-          inherit (inputs) meta-sifive;
-          inherit (self.packages.${system}) opensbi nsign;
-        };
+          nsign = pkgs.callPackage ./packages/nsign.nix { };
 
-        nixosImage =
-          (nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/configuration.nix
-              { nixpkgs.buildPlatform = system; }
-            ];
-          }).config.system.build.sdImage;
-
-        nixosImage6_12 =
-          (nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/configuration.nix
-              (
-                { lib, pkgs, ... }:
-                {
-                  nixpkgs.buildPlatform = system;
-                  boot.kernelPackages = lib.mkForce (
-                    pkgs.linuxPackagesFor (pkgs.callPackage ./kernels/linux-6.12.nix { })
-                  );
-                }
-              )
-            ];
-          }).config.system.build.sdImage;
-      }) nixpkgs.legacyPackages;
+          bootchain = pkgs.callPackage ./packages/bootchain.nix {
+            inherit (inputs) meta-sifive;
+            inherit (self.packages.${system}) opensbi nsign;
+          };
+        }
+      ) nixpkgs.legacyPackages;
 
       checks = builtins.mapAttrs (system: pkgs: {
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
