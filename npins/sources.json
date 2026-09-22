@@ -1,0 +1,38 @@
+{
+  "pins": {
+    "pre-commit-hooks": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "cachix",
+        "repo": "git-hooks.nix"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "0d3997c4d3253505f77c9bcea63904bb575da3c5",
+      "url": "https://github.com/cachix/git-hooks.nix/archive/0d3997c4d3253505f77c9bcea63904bb575da3c5.tar.gz",
+      "hash": "sha256-2dUuLTiQrf2gUFVLlayDq/hgluitplAMv6Y9bYwQQ+c="
+    },
+    "meta-sifive": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "sifive",
+        "repo": "meta-sifive"
+      },
+      "branch": "rel/meta-sifive/hifive-premier-p550",
+      "submodules": false,
+      "revision": "e83cb3fa233ec015ba073e42042f4ee3036bbc77",
+      "url": "https://github.com/sifive/meta-sifive/archive/e83cb3fa233ec015ba073e42042f4ee3036bbc77.tar.gz",
+      "hash": "sha256-BAvga3WM7s8IVlLhlS8cs1WAe6TDSWSGdVhKK94O6a8=",
+      "frozen": true
+    },
+    "nixpkgs": {
+      "type": "Channel",
+      "name": "nixos-unstable",
+      "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1077996.6774f7bc2537/nixexprs.tar.xz",
+      "hash": "sha256-OJe62m8gZx4xEAQnMcqH1u31/uu4Xf0q2ykAEHZfgrg="
+    }
+  },
+  "version": 7
+}
