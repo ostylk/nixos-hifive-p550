@@ -10,6 +10,8 @@
   rootfs,
   populateEspCommands,
   imageUuid ? "1dec9de4-6e6b-4460-8c74-1ee4a2f0433e",
+  efiPartitionUuid ? "76802b3f-20d8-4a68-97cf-0efdf3374040",
+  rootPartitionUuid ? "44509368-25fb-4435-bf02-53843ae7d343",
   imageSize ? "4G",
   efiPartitionSize ? "1G",
   efiPartitionLabel ? "EFI",
@@ -24,8 +26,12 @@ runCommand "${name}.img.xz"
       mtools
       xz
     ];
+
+    enableParallelBuilding = true;
   }
   ''
+    set -euo pipefail
+
     # Check if efiPartitionSize < imageSize which is obviously an user error
     if [ "$(numfmt --from=iec ${efiPartitionSize})" -ge "$(numfmt --from=iec ${imageSize})" ]; then
       echo "efiPartitionSize (${efiPartitionSize}) must be smaller than imageSize (${imageSize})." >&2
@@ -38,8 +44,8 @@ runCommand "${name}.img.xz"
       label: gpt
       label-id: ${imageUuid}
 
-      size=${efiPartitionSize},type=U
-      type=72ec70a6-cf74-40e6-bd49-4bda08e8f224
+      size=${efiPartitionSize},type=U,uuid=${efiPartitionUuid}
+      type=72ec70a6-cf74-40e6-bd49-4bda08e8f224,uuid=${rootPartitionUuid}
     EOF
 
     # Check whether rootfs fits into parition and copy the rootfs into the image
