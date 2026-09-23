@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -11,7 +10,7 @@
     system.build.image = config.system.build.sdImage;
     system.build.sdImage =
       let
-        rootfs = pkgs.callPackage (import "${inputs.nixpkgs}/nixos/lib/make-ext4-fs.nix") {
+        rootfs = pkgs.callPackage (import "${pkgs.path}/nixos/lib/make-ext4-fs.nix") {
           compressImage = false;
           volumeLabel = "rootfs";
           storePaths = [ config.system.build.toplevel ];

@@ -13,9 +13,6 @@ let
     kernel:
     (import "${nixpkgs}/nixos/" {
       system = null;
-      specialArgs = {
-        inputs = sources;
-      };
       configuration = (
         { lib, pkgs, ... }: {
           imports = [

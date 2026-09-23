@@ -28,7 +28,5 @@ let
 in
 pkgs.mkShell {
   inherit (pre-commit) shellHook;
-  buildInputs = pre-commit.enabledPackages;
-
-  packages = [ ];
+  packages = pre-commit.enabledPackages;
 }
